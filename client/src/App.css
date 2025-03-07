@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #1e1e2e, #2a2a40);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* 🔥 Dark Mode */
+.dark-mode {
+  background: linear-gradient(135deg, #1e1e2e, #2a2a40);
+  color: white;
+}
+
+/* 🔥 Light Mode */
+.light-mode {
+  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  color: black;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 420px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Light mode container */
+.light-mode .container {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Light Mode Input */
+.light-mode input {
+  background: rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.light-mode input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+button {
+  background: #ff4b5c;
+  color: white;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #ff2e44;
+}
+
+/* Light Mode Button */
+.light-mode button {
+  background: #ff4b5c;
+  color: white;
+}
+
+.light-mode button:hover {
+  background: #ff2e44;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 6px 0;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+li:hover {
+  transform: scale(1.02);
+}
+
+/* Light Mode List Items */
+.light-mode li {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.completed {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Light Mode Completed Tasks */
+.light-mode .completed {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.task-text {
+  flex: 1;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff4b5c;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  color: #ff2e44;
+}
+
+/* Light Mode Delete Button */
+.light-mode .delete-btn {
+  color: #ff4b5c;
+}
+
+.light-mode .delete-btn:hover {
+  color: #ff2e44;
+}
+
+/* 🔥 Toggle Button */
+.toggle-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.toggle-btn {
+  background: rgba(255, 255, 255, 0.2);
+}

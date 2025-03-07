@@ -1,0 +1,66 @@
+import React, { useState, useEffect } from "react";
+import "./App.css";
+
+function App() {
+  const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState("");
+
+  // ✅ Fetch Tasks from API
+  useEffect(() => {
+    fetch("http://localhost:5000/tasks")
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  }, []);
+
+  // ✅ Add Task
+  const addTask = () => {
+    if (task.trim() !== "") {
+      fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: task }),
+      })
+        .then((res) => res.json())
+        .then((newTask) => setTasks([...tasks, newTask]));
+      setTask("");
+    }
+  };
+
+  // ✅ Toggle Task Completion
+  const toggleTask = (id) => {
+    fetch(`http://localhost:5000/tasks/${id}`, { method: "PUT" })
+      .then((res) => res.json())
+      .then((updatedTasks) => setTasks(updatedTasks));
+  };
+
+  // ✅ Delete Task
+  const deleteTask = (id) => {
+    fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
+      .then(() => setTasks(tasks.filter((task) => task.id !== id)));
+  };
+
+  return (
+    <div className="container">
+      <h1>Task Manager</h1>
+      <div className="input-container">
+        <input
+          type="text"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="Enter a new task"
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id} className={task.completed ? "completed" : ""}>
+            <span onClick={() => toggleTask(task.id)}>{task.title}</span>
+            <button onClick={() => deleteTask(task.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
