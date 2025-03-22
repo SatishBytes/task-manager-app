@@ -9,24 +9,22 @@ app.use(cors());
 
 const DATA_FILE = "./data.json";
 
-// Read tasks from JSON file
+
 const readData = () => {
   const data = fs.readFileSync(DATA_FILE);
   return JSON.parse(data);
 };
 
-// Write tasks to JSON file
 const writeData = (data) => {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 };
 
-// Get all tasks
+
 app.get("/tasks", (req, res) => {
   const tasks = readData();
   res.json(tasks);
 });
 
-// Add a new task
 app.post("/tasks", (req, res) => {
   const tasks = readData();
   const newTask = { id: Date.now(), title: req.body.title, completed: false };
@@ -35,7 +33,7 @@ app.post("/tasks", (req, res) => {
   res.status(201).json(newTask);
 });
 
-// Update task completion
+
 app.put("/tasks/:id", (req, res) => {
   let tasks = readData();
   tasks = tasks.map((task) =>
@@ -45,7 +43,6 @@ app.put("/tasks/:id", (req, res) => {
   res.json({ message: "Task updated successfully" });
 });
 
-// Delete a task
 app.delete("/tasks/:id", (req, res) => {
   let tasks = readData();
   tasks = tasks.filter((task) => task.id != req.params.id);
@@ -53,7 +50,6 @@ app.delete("/tasks/:id", (req, res) => {
   res.json({ message: "Task deleted successfully" });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
