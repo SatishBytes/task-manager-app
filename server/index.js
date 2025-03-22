@@ -36,7 +36,6 @@ app.delete("/tasks/:id", (req, res) => {
   res.json({ message: "Task deleted" });
 });
 
-// ✅ Start the server
 app.listen(PORT, () => {
   console.log(`Task Manager API is running at http://localhost:${PORT}`);
 });
