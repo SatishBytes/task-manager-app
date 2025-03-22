@@ -5,14 +5,13 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
-  // ✅ Fetch Tasks from API
   useEffect(() => {
     fetch("http://localhost:5000/tasks")
       .then((res) => res.json())
       .then((data) => setTasks(data));
   }, []);
 
-  // ✅ Add Task
+
   const addTask = () => {
     if (task.trim() !== "") {
       fetch("http://localhost:5000/tasks", {
@@ -33,7 +32,6 @@ function App() {
       .then((updatedTasks) => setTasks(updatedTasks));
   };
 
-  // ✅ Delete Task
   const deleteTask = (id) => {
     fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
       .then(() => setTasks(tasks.filter((task) => task.id !== id)));
