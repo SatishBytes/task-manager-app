@@ -9,13 +9,13 @@ const allowedOrigins = [
   "https://task-manager-app1-alpha.vercel.app"
 ];
 
+// ✅ CORS Middleware
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.warn("Blocked by CORS:", origin);
-      callback(null, false);
+      callback(new Error("Not allowed by CORS"));
     }
   },
   methods: "GET,POST,PUT,DELETE",
@@ -24,6 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 
+// ✅ Preflight handler for Vercel
 app.options("*", (req, res) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -34,19 +35,22 @@ app.options("*", (req, res) => {
   res.status(200).end();
 });
 
-// ✅ Use LOCAL variable instead of global
+// ✅ Use local variable, not global
 let tasks = [
   { id: 1, title: "Sample Task", completed: false }
 ];
 
+// ✅ Health check
 app.get("/api/ping", (req, res) => {
   res.json({ message: "Server is alive!" });
 });
 
+// ✅ Get all tasks
 app.get("/api/tasks", (req, res) => {
   res.json(tasks);
 });
 
+// ✅ Create a new task
 app.post("/api/tasks", (req, res) => {
   const newTask = {
     id: Date.now(),
@@ -57,6 +61,7 @@ app.post("/api/tasks", (req, res) => {
   res.status(201).json(newTask);
 });
 
+// ✅ Toggle task completion
 app.put("/api/tasks/:id", (req, res) => {
   tasks = tasks.map(task =>
     task.id == req.params.id ? { ...task, completed: !task.completed } : task
@@ -64,6 +69,7 @@ app.put("/api/tasks/:id", (req, res) => {
   res.json(tasks);
 });
 
+// ✅ Delete a task
 app.delete("/api/tasks/:id", (req, res) => {
   tasks = tasks.filter(task => task.id != req.params.id);
   res.json({ message: "Task deleted" });
