@@ -9,7 +9,6 @@ const allowedOrigins = [
   "https://task-manager-app1-alpha.vercel.app"
 ];
 
-// ✅ Safe CORS
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -25,7 +24,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ Handle preflight requests
 app.options("*", (req, res) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -36,17 +34,15 @@ app.options("*", (req, res) => {
   res.status(200).end();
 });
 
-// ✅ Safe local array (not global)
+// ✅ Use LOCAL variable instead of global
 let tasks = [
   { id: 1, title: "Sample Task", completed: false }
 ];
 
-// ✅ Test route
 app.get("/api/ping", (req, res) => {
   res.json({ message: "Server is alive!" });
 });
 
-// ✅ API Routes
 app.get("/api/tasks", (req, res) => {
   res.json(tasks);
 });
