@@ -4,19 +4,35 @@ const cors = require("cors");
 
 const app = express();
 
-const allowedOrigin = "https://task-manager-app-frontend-beige.vercel.app";
+// List of allowed frontend URLs
+const allowedOrigins = [
+  "https://task-manager-app-frontend-beige.vercel.app",
+  // "https://task-manager-app1-alpha.vercel.app"
+];
 
+// CORS middleware for dynamic origin checking
 app.use(cors({
-  origin: allowedOrigin,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type"
 }));
+
 app.use(express.json());
 
+// Manual preflight handling for Vercel
 app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", allowedOrigin);
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.status(200).end();
 });
 
