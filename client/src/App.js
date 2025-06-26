@@ -6,7 +6,7 @@ function App() {
   const [task, setTask] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/tasks")
+   fetch("https://task-manager-app-lac-chi.vercel.app/api/tasks")
       .then((res) => res.json())
       .then((data) => setTasks(data));
   }, []);
@@ -27,7 +27,7 @@ function App() {
 
   // ✅ Toggle Task Completion
   const toggleTask = (id) => {
-    fetch(`http://localhost:5000/tasks/${id}`, { method: "PUT" })
+    fetch(`https://task-manager-app-lac-chi.vercel.app/api/tasks/${id}`, { method: "PUT" })
       .then((res) => res.json())
       .then((updatedTasks) => setTasks(updatedTasks));
   };
