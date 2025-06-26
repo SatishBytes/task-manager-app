@@ -5,36 +5,46 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
 
+  // 🔃 Fetch tasks on load
   useEffect(() => {
-   fetch("https://task-manager-app-lac-chi.vercel.app/api/tasks")
+    fetch("https://task-manager-app-lac-chi.vercel.app/api/tasks")
       .then((res) => res.json())
-      .then((data) => setTasks(data));
+      .then((data) => setTasks(data))
+      .catch((err) => console.error("Failed to fetch tasks:", err));
   }, []);
 
-
+  // ➕ Add new task
   const addTask = () => {
     if (task.trim() !== "") {
-      fetch("https://task-manager-app-lac-chi.vercel.app/tasks", {
+      fetch("https://task-manager-app-lac-chi.vercel.app/api/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: task }),
       })
         .then((res) => res.json())
-        .then((newTask) => setTasks([...tasks, newTask]));
+        .then((newTask) => setTasks([...tasks, newTask]))
+        .catch((err) => console.error("Failed to add task:", err));
       setTask("");
     }
   };
 
   // ✅ Toggle Task Completion
   const toggleTask = (id) => {
-    fetch(`https://task-manager-app-lac-chi.vercel.app/api/tasks/${id}`, { method: "PUT" })
+    fetch(`https://task-manager-app-lac-chi.vercel.app/api/tasks/${id}`, {
+      method: "PUT",
+    })
       .then((res) => res.json())
-      .then((updatedTasks) => setTasks(updatedTasks));
+      .then((updatedTasks) => setTasks(updatedTasks))
+      .catch((err) => console.error("Failed to toggle task:", err));
   };
 
+  // ❌ Delete Task
   const deleteTask = (id) => {
-    fetch(`https://task-manager-app-lac-chi.vercel.app/tasks/${id}`, { method: "DELETE" })
-      .then(() => setTasks(tasks.filter((task) => task.id !== id)));
+    fetch(`https://task-manager-app-lac-chi.vercel.app/api/tasks/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => setTasks(tasks.filter((task) => task.id !== id)))
+      .catch((err) => console.error("Failed to delete task:", err));
   };
 
   return (
