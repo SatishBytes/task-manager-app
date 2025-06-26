@@ -36,60 +36,41 @@ app.options("*", (req, res) => {
   res.status(200).end();
 });
 
-// ✅ Declare global-safe task array
-global.tasks = global.tasks || [
+// ✅ Safe local array (not global)
+let tasks = [
   { id: 1, title: "Sample Task", completed: false }
 ];
 
-// ✅ Routes
+// ✅ Test route
+app.get("/api/ping", (req, res) => {
+  res.json({ message: "Server is alive!" });
+});
+
+// ✅ API Routes
 app.get("/api/tasks", (req, res) => {
-  try {
-    res.json(global.tasks);
-  } catch (err) {
-    console.error("GET error:", err);
-    res.status(500).json({ message: "GET failed" });
-  }
+  res.json(tasks);
 });
 
 app.post("/api/tasks", (req, res) => {
-  try {
-    const newTask = {
-      id: Date.now(),
-      title: req.body.title,
-      completed: false
-    };
-    global.tasks.push(newTask);
-    res.status(201).json(newTask);
-  } catch (err) {
-    console.error("POST error:", err);
-    res.status(500).json({ message: "POST failed" });
-  }
+  const newTask = {
+    id: Date.now(),
+    title: req.body.title,
+    completed: false
+  };
+  tasks.push(newTask);
+  res.status(201).json(newTask);
 });
 
 app.put("/api/tasks/:id", (req, res) => {
-  try {
-    global.tasks = global.tasks.map(task =>
-      task.id == req.params.id ? { ...task, completed: !task.completed } : task
-    );
-    res.json(global.tasks);
-  } catch (err) {
-    console.error("PUT error:", err);
-    res.status(500).json({ message: "PUT failed" });
-  }
+  tasks = tasks.map(task =>
+    task.id == req.params.id ? { ...task, completed: !task.completed } : task
+  );
+  res.json(tasks);
 });
 
 app.delete("/api/tasks/:id", (req, res) => {
-  try {
-    global.tasks = global.tasks.filter(task => task.id != req.params.id);
-    res.json({ message: "Task deleted" });
-  } catch (err) {
-    console.error("DELETE error:", err);
-    res.status(500).json({ message: "DELETE failed" });
-  }
-});
-
-app.get("/api/ping", (req, res) => {
-  res.json({ message: "Server is alive!" });
+  tasks = tasks.filter(task => task.id != req.params.id);
+  res.json({ message: "Task deleted" });
 });
 
 module.exports = app;
