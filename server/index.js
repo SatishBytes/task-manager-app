@@ -7,7 +7,7 @@ const app = express();
 // List of allowed frontend URLs
 const allowedOrigins = [
   "https://task-manager-app-frontend-beige.vercel.app",
-  // "https://task-manager-app1-alpha.vercel.app"
+  "https://task-manager-app1-alpha.vercel.app"
 ];
 
 // CORS middleware for dynamic origin checking
