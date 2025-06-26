@@ -88,5 +88,9 @@ app.delete("/api/tasks/:id", (req, res) => {
   }
 });
 
+app.get("/api/ping", (req, res) => {
+  res.json({ message: "Server is alive!" });
+});
+
 module.exports = app;
 module.exports.handler = serverless(app);
