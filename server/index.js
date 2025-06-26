@@ -33,4 +33,4 @@ app.delete("/api/tasks/:id", (req, res) => {
 });
 
 module.exports = app;
-module.exports.handler = serverless(app); // <-- required by Vercel
+module.exports.handler = serverless(app); 
