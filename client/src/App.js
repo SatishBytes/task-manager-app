@@ -14,7 +14,7 @@ function App() {
 
   const addTask = () => {
     if (task.trim() !== "") {
-      fetch("http://localhost:5000/tasks", {
+      fetch("https://task-manager-app-lac-chi.vercel.app/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: task }),
@@ -33,7 +33,7 @@ function App() {
   };
 
   const deleteTask = (id) => {
-    fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
+    fetch(`https://task-manager-app-lac-chi.vercel.app/tasks/${id}`, { method: "DELETE" })
       .then(() => setTasks(tasks.filter((task) => task.id !== id)));
   };
 
