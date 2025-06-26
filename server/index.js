@@ -4,19 +4,18 @@ const cors = require("cors");
 
 const app = express();
 
-// List of allowed frontend URLs
 const allowedOrigins = [
   "https://task-manager-app-frontend-beige.vercel.app",
   "https://task-manager-app1-alpha.vercel.app"
 ];
 
-// CORS middleware for dynamic origin checking
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      console.warn("Blocked by CORS:", origin);
+      callback(null, false); // ✅ safe fallback
     }
   },
   methods: "GET,POST,PUT,DELETE",
@@ -25,7 +24,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Manual preflight handling for Vercel
 app.options("*", (req, res) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
