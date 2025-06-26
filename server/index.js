@@ -3,9 +3,24 @@ const serverless = require("serverless-http");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+
+const allowedOrigin = "https://task-manager-app-frontend-beige.vercel.app";
+
+app.use(cors({
+  origin: allowedOrigin,
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type"
+}));
 app.use(express.json());
 
+app.options("*", (req, res) => {
+  res.header("Access-Control-Allow-Origin", allowedOrigin);
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.status(200).end();
+});
+
+// Routes
 let tasks = [
   { id: 1, title: "Sample Task", completed: false }
 ];
@@ -33,4 +48,4 @@ app.delete("/api/tasks/:id", (req, res) => {
 });
 
 module.exports = app;
-module.exports.handler = serverless(app); 
+module.exports.handler = serverless(app);
