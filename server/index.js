@@ -9,6 +9,7 @@ const allowedOrigins = [
   "https://task-manager-app1-alpha.vercel.app"
 ];
 
+// ✅ Safe CORS
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,6 +25,7 @@ app.use(cors({
 
 app.use(express.json());
 
+// ✅ Handle preflight requests
 app.options("*", (req, res) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -34,31 +36,56 @@ app.options("*", (req, res) => {
   res.status(200).end();
 });
 
-// ✅ Global-safe task list
+// ✅ Declare global-safe task array
 global.tasks = global.tasks || [
   { id: 1, title: "Sample Task", completed: false }
 ];
 
+// ✅ Routes
 app.get("/api/tasks", (req, res) => {
-  res.json(global.tasks);
+  try {
+    res.json(global.tasks);
+  } catch (err) {
+    console.error("GET error:", err);
+    res.status(500).json({ message: "GET failed" });
+  }
 });
 
 app.post("/api/tasks", (req, res) => {
-  const newTask = { id: Date.now(), title: req.body.title, completed: false };
-  global.tasks.push(newTask);
-  res.status(201).json(newTask);
+  try {
+    const newTask = {
+      id: Date.now(),
+      title: req.body.title,
+      completed: false
+    };
+    global.tasks.push(newTask);
+    res.status(201).json(newTask);
+  } catch (err) {
+    console.error("POST error:", err);
+    res.status(500).json({ message: "POST failed" });
+  }
 });
 
 app.put("/api/tasks/:id", (req, res) => {
-  global.tasks = global.tasks.map(task =>
-    task.id == req.params.id ? { ...task, completed: !task.completed } : task
-  );
-  res.json(global.tasks);
+  try {
+    global.tasks = global.tasks.map(task =>
+      task.id == req.params.id ? { ...task, completed: !task.completed } : task
+    );
+    res.json(global.tasks);
+  } catch (err) {
+    console.error("PUT error:", err);
+    res.status(500).json({ message: "PUT failed" });
+  }
 });
 
 app.delete("/api/tasks/:id", (req, res) => {
-  global.tasks = global.tasks.filter(task => task.id != req.params.id);
-  res.json({ message: "Task deleted" });
+  try {
+    global.tasks = global.tasks.filter(task => task.id != req.params.id);
+    res.json({ message: "Task deleted" });
+  } catch (err) {
+    console.error("DELETE error:", err);
+    res.status(500).json({ message: "DELETE failed" });
+  }
 });
 
 module.exports = app;
