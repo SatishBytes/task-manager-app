@@ -15,7 +15,7 @@ app.use(cors({
       callback(null, true);
     } else {
       console.warn("Blocked by CORS:", origin);
-      callback(null, false); // ✅ safe fallback
+      callback(null, false);
     }
   },
   methods: "GET,POST,PUT,DELETE",
@@ -34,30 +34,30 @@ app.options("*", (req, res) => {
   res.status(200).end();
 });
 
-// Routes
-let tasks = [
+// ✅ Global-safe task list
+global.tasks = global.tasks || [
   { id: 1, title: "Sample Task", completed: false }
 ];
 
 app.get("/api/tasks", (req, res) => {
-  res.json(tasks);
+  res.json(global.tasks);
 });
 
 app.post("/api/tasks", (req, res) => {
   const newTask = { id: Date.now(), title: req.body.title, completed: false };
-  tasks.push(newTask);
+  global.tasks.push(newTask);
   res.status(201).json(newTask);
 });
 
 app.put("/api/tasks/:id", (req, res) => {
-  tasks = tasks.map(task =>
+  global.tasks = global.tasks.map(task =>
     task.id == req.params.id ? { ...task, completed: !task.completed } : task
   );
-  res.json(tasks);
+  res.json(global.tasks);
 });
 
 app.delete("/api/tasks/:id", (req, res) => {
-  tasks = tasks.filter(task => task.id != req.params.id);
+  global.tasks = global.tasks.filter(task => task.id != req.params.id);
   res.json({ message: "Task deleted" });
 });
 
